@@ -30,7 +30,7 @@ TWTL Doc 001
 
 ## GitHub에서의 Markdown 문법
 
-Wikitext 문법이 여러 위키 서비스에서 비슷한 변종들로 분화했듯, Markdown 역시 널리 쓰이면서 이와 같은 변화를 겪게 되었습니다. 다행인 점은, Wikitext 변종에 비해 Markdown 변종은 대체로 비슷하다는 점입니다. 적어도 대부분의 Markdown 변종은 제목 표기와 하이퍼링크, 이미지 삽입, 목록, **굵은 글씨 (bold text)**(`**굵은 글씨 (bold text)**`), *기울인 글씨 (italic text)*(`*기울인 글씨 (italic text)*`), `고정폭 텍스트 (monospace text)`(`\`고정폭 텍스트 (monospace text)\``)에 대해서 일정한 문법을 갖습니다. Markdown 문법과 변종에 대해서는 앞서 링크한 Wikipedia 문서와 [IETF RFC 7764](https://tools.ietf.org/html/rfc7764) 문서를 참조하십시오.
+Wikitext 문법이 여러 위키 서비스에서 비슷한 변종들로 분화했듯, Markdown 역시 널리 쓰이면서 이와 같은 변화를 겪게 되었습니다. 다행인 점은, Wikitext 변종에 비해 Markdown 변종은 대체로 비슷하다는 점입니다. 적어도 대부분의 Markdown 변종은 제목 표기와 하이퍼링크, 이미지 삽입, 목록, **굵은 글씨 (bold text)**(`**굵은 글씨 (bold text)**`), *기울인 글씨 (italic text)*(`*기울인 글씨 (italic text)*`), `고정폭 텍스트 (monospace text)`(`` `고정폭 텍스트 (monospace text)` ``)에 대해서 일정한 문법을 갖습니다. Markdown 문법과 변종에 대해서는 앞서 링크한 Wikipedia 문서와 [IETF RFC 7764](https://tools.ietf.org/html/rfc7764) 문서를 참조하십시오.
 
 GitHub에서 쓰이는 Markdown의 변종은 GitHub Flavored Markdown 또는 GFM이라고 부르는 것입니다. GFM은 여러 줄 코드 인용과 코드 구문 강조, 작업 목록, 표 등을 표현할 수 있는 확장입니다. GFM에 대해서는 GitHub Guides의 [Mastering Markdown](https://guides.github.com/features/mastering-markdown/) 문서를 읽어 보기 바랍니다. 더 자세히 알아보기 위해서는 GitHub Help의 [Writing on GitHub](https://help.github.com/categories/writing-on-github/) 카테고리 내의 문서를 읽는 것도 좋습니다. README.md의 편집 버튼을 눌러 미리보기를 하거나, 
 
@@ -50,7 +50,7 @@ TWTL 프로젝트의 문서는 GitHub 저장소 [TWTL/Documentation](/)에서 Ma
 
 **구역 제목**. ATX heading(`## ...`)을 사용합니다. Setext heading(`====`, `----`)을 사용하지 않습니다. 이는 문서 내의 제목이 3단계 이상으로 깊어질 수 있기에 일관성을 기하기 위함입니다.
 
-**코드 조각**. 코드 조각, 클래스 이름, 인터페이스 이름 등은 `\`close()\``와 같이 고정폭 폰트로 합니다. 여러 줄 코드 조각이 문서에 들어가야 하는 경우 `\`\`\``로 시작하고 끝나는 여러 줄 고정폭 인용을 사용합니다.
+**코드 조각**. 코드 조각, 클래스 이름, 인터페이스 이름 등은 `` `close()` ``와 같이 고정폭 폰트로 합니다. 여러 줄 코드 조각이 문서에 들어가야 하는 경우 ```` ``` ````로 시작하고 끝나는 여러 줄 고정폭 인용을 사용합니다.
 
 **이미지**. Markdown에서 이미지는 텍스트와 같은 수준의 인라인 요소로 삽입되며 이 요소의 크기와 위치 등 배치를 세밀하게 조절하는 방법은 없습니다. 그렇기에 대부분의 이미지는 텍스트와 함께 인라인으로 삽입되는 대신 단일 문단으로 블록처럼 삽입되는 것이 권장됩니다. TWTL Doc 000에서 Lorem ipsum 이미지의 삽입 예를 참조하십시오.
 
