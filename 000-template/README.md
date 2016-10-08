@@ -12,6 +12,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Lorem ipsum에 대해서는 [Wikipedia 문서](https://en.wikipedia.org/wiki/Lorem_ipsum)를 참조하십시오.
 
-## 문서 작성 규약
+## Separate Section File Example
 
-링크. [TWTL Doc 000](/000-template)와 같이 문서에 대한 링크를 겁니다.
+이 구역의 본문은 [SectionExample.md](./SectionExample.md)입니다.
+
+## 하위 문서들
+
+이 문서는 [TWTL Doc 000](/000-template)입니다.
+
+하위 문서로 [TWTL Doc 000/01](/000-template/01-sub)이 있습니다.
