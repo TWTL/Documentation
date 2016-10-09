@@ -32,7 +32,7 @@ TWTL Doc 001
 
 Wikitext 문법이 여러 위키 서비스에서 비슷한 변종들로 분화했듯, Markdown 역시 널리 쓰이면서 이와 같은 변화를 겪게 되었습니다. 다행인 점은, Wikitext 변종에 비해 Markdown 변종은 대체로 비슷하다는 점입니다. 적어도 대부분의 Markdown 변종은 제목 표기와 하이퍼링크, 이미지 삽입, 목록, **굵은 글씨 (bold text)**(`**굵은 글씨 (bold text)**`), *기울인 글씨 (italic text)*(`*기울인 글씨 (italic text)*`), `고정폭 텍스트 (monospace text)`(`` `고정폭 텍스트 (monospace text)` ``)에 대해서 일정한 문법을 갖습니다. Markdown 문법과 변종에 대해서는 앞서 링크한 Wikipedia 문서와 [IETF RFC 7764](https://tools.ietf.org/html/rfc7764) 문서를 참조하십시오.
 
-GitHub에서 쓰이는 Markdown의 변종은 GitHub Flavored Markdown 또는 GFM이라고 부르는 것입니다. GFM은 여러 줄 코드 인용과 코드 구문 강조, 작업 목록, 표 등을 표현할 수 있는 확장입니다. GFM에 대해서는 GitHub Guides의 [Mastering Markdown](https://guides.github.com/features/mastering-markdown/) 문서를 읽어 보기 바랍니다. 더 자세히 알아보기 위해서는 GitHub Help의 [Writing on GitHub](https://help.github.com/categories/writing-on-github/) 카테고리 내의 문서를 읽는 것도 좋습니다. README.md의 편집 버튼을 눌러 미리보기를 하거나, 
+GitHub에서 쓰이는 Markdown의 변종은 GitHub Flavored Markdown 또는 GFM이라고 부르는 것입니다. GFM은 여러 줄 코드 인용과 코드 구문 강조, 작업 목록, 표 등을 표현할 수 있는 확장입니다. GFM에 대해서는 GitHub Guides의 [Mastering Markdown](https://guides.github.com/features/mastering-markdown/) 문서를 읽어 보기 바랍니다. 더 자세히 알아보기 위해서는 GitHub Help의 [Writing on GitHub](https://help.github.com/categories/writing-on-github/) 카테고리 내의 문서를 읽는 것도 좋습니다. 저장소 페이지 내에서 Markdown 파일의 편집 버튼을 누르거나 Issue 작성 인터페이스에서 미리보기(Preview)에 진입해 GFM의 용법을 좀 더 익힐 수 있습니다.
 
 ## TWTL 프로젝트의 문서 포매팅
 
