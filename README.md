@@ -6,6 +6,8 @@
 
 * 000 [Template](/000-template)
 * 001 [Writing Document](/001-writing)
-* 002 [Repository Index](/002-index)
-* 003 [Requirement Specification](/003-specification)
-* 004 [Engine Architecture](/004-architecture)
+* 002 [Repository Index and Usage](/002-index)
+* 003 [Coding Convention](/003-coding)
+* 004 reserved
+* 005 [Requirement Specification](/005-specification)
+* 006 [Engine Architecture](/006-architecture)
