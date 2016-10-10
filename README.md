@@ -10,4 +10,4 @@
 * 003 [Coding Convention](/003-coding)
 * 004 reserved
 * 005 [Requirement Specification](/005-specification)
-* 006 [Engine Architecture](/006-architecture)
+* 006 [System Architecture](/006-architecture)
