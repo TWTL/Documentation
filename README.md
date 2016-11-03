@@ -9,6 +9,6 @@
 * 002 [Repository Index and Usage](/002-index)
 * 003 [Coding Convention](/003-coding)
 * 004 reserved
-* 005 [Requirement Specification](/005-specification)
+* 005 [Requirement Specification: Overview](/005-overview)
 * 006 [System Architecture](/006-architecture)
 * 007 [Writing Test](007-testwriting)
