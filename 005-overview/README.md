@@ -1,8 +1,8 @@
-# System Architecture
+# Requirement Specification: Overview
 
-TWTL Doc 006
+TWTL Doc 005
 
-TWTL 시스템의 골격을 정의하는 문서입니다.
+TWTL 시스템의 시스템의 목적, 기능, 구현 방식 등에 대해 포괄적으로 다룹니다. IEEE 830 권고 SRS의 Section 1, Section 2에 대응하는 내용을 기술합니다.
 
 ## 본 문서에 대하여
 시스템 아키텍쳐는 시스템의 목적과 이용자 요구사항 등을 기초로 하는 전체적인 시스템 골격을 의미합니다. 다양한 기술이 여러가지 형태로 결합되기에, 혼란을 방지하고 본래 목적의 방향성을 잃지 않기 위해 가장 먼저 정하는 것이 일반적입니다.
