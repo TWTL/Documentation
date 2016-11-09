@@ -65,7 +65,7 @@ TWTL Doc 009
 #### /Engine/PortsListening/
 * Type: Boolean
 * Access: rw
-기본값: 'FALSE'
+기본값: `FALSE`
 
 #### /Engine/Log/
 * Type: Object(...)
