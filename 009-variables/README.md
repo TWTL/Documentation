@@ -75,7 +75,7 @@ TWTL Doc 009
 기본값: `FALSE`
 
 #### /Engine/Log/
-* Type: Object(...)
+* Type: List of string
 * Access: rw
 
 기본값: 정의되지 않음.
@@ -89,7 +89,7 @@ TWTL Doc 009
 
 기본값: 정의되지 않음.
 
-##### /Net/ConnectingList/하위항
+##### /Net/ConnectingList/하위/
 
 ### /Perf/
 
