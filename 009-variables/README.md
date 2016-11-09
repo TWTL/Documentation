@@ -87,6 +87,9 @@ TWTL Doc 009
 * Type: List of string
 * Access: rw
 
+기본값: 정의되지 않음.
+
+##### /Net/ConnectingList/하위항
 
 ### /Perf/
 
@@ -95,8 +98,8 @@ TWTL Doc 009
 ### /Reg/
 
 #### /Reg/Key/
-* Type: String
-* Access: Object(...)
+* Type: Object(...)
+* Access: r
 
 #### /Reg/Key/Name/
 * Type: String
