@@ -64,6 +64,12 @@ TWTL Doc 009
 
 #### /Engine/PortsListening/
 * Type: Boolean
+* Access: r
+
+기본값: `FALSE`
+
+#### /Engine/PortsConnecting/
+* Type: Boolean
 * Access: rw
 
 기본값: `FALSE`
@@ -77,19 +83,25 @@ TWTL Doc 009
 
 ### /Net/
 
+#### /Net/ConnectingList/
+* Type: List of string
+* Access: rw
+
+
 ### /Perf/
 
 ### /Files/
 
-#### /Files/
-
-
 ### /Reg/
 
-#### /Reg/Name/
+#### /Reg/Key/
+* Type: String
+* Access: Object(...)
+
+#### /Reg/Key/Name/
 * Type: String
 * Access: r
 
-#### /Reg/Value/
+#### /Reg/Key/Value/
 * Type: String
 * Access: r
