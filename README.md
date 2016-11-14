@@ -13,4 +13,4 @@
 * 006 [System Architecture](/006-architecture)
 * 007 [Writing Test](/007-testwriting)
 * 008 [Protocol](/008-protocol)
-* 009 [List of Variables](/009-variables)
+* 009 [Engine Variables](/009-variables)
