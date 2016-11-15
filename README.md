@@ -14,3 +14,6 @@
 * 007 [Writing Test](/007-testwriting)
 * 008 [Protocol](/008-protocol)
 * 009 [Engine Variables](/009-variables)
+* 010 [Engine Database](/010-database)
+* 011 [The TWTL Graphical User Interface](/011-gui)
+* 012 reserved
