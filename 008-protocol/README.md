@@ -1,32 +1,14 @@
-# Engine Port
-- Main = 15259
+# Protocol
 
-# Datable Table in SQL
-- Performance (Process)
-```
-sql = L"CREATE TABLE IF NOT EXISTS snapshot_process("
- 			L"idx INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL"
- 			L"time TEXT NOT NULL"
- 			L"pid INTEGER"
- 			L"ppid INTEGER"
- 			L"process_name TEXT NOT NULL"
- 			L"process_path TEXT NOT NULL);";
-```
-- Registry
-```
-sql = L"CREATE TABLE IF NOT EXISTS snapshot_hklm_run("
- 			L"idx INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL"
- 			L"time TEXT NOT NULL"
- 			L"value TEXT NOT NULL"
- 			L"type INTEGER NOT NULL"
- 			L"data TEXT NOT NULL);";
-```
+TWTL Doc 008
 
-- Network
-```
-sql = L"CREATE TABLE IF NOT EXISTS snapshot_network("
-			L"idx INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL"
-			L"time TEXT NOT NULL"
-			L"ip TEXT NOT NULL"
-			L"port INTEGER);";
-```
+전체 구조에서 엔진-프로토콜 통신에 필요한 규약을 기술합니다.
+
+## 개요
+
+![Structure](./Protocol-Structure.png)
+
+포트 번호는 다음과 같습니다.
+
+* 주 포트: 5259
+* 보조 포트: 15259
