@@ -6,7 +6,7 @@ TWTL 소프트웨어 시스템의 전체적 구조에 대해 기술합니다. �
 
 ## Structure
 
-![System Structure](./System draft.png)
+![System Structure](./System_Structure.png)
 
 ## 작업환경
 
