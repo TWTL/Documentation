@@ -6,7 +6,7 @@ TWTL 소프트웨어 시스템의 전체적 구조에 대해 기술합니다. �
 
 ## Structure
 
-![System Structure](./System_Structure.png)
+![System Structure](./System_Structure_Revised.png)
 
 ## Speculation
 자세한 사항은 [TWTL 005 overview](/005-overview) 참조하기 바랍니다.
