@@ -90,7 +90,7 @@ Response 메시지는 Request 메시지의 각 명령에 대응하는 결과 항
 
 request.get 타입의 항목에 대한 응답은 해당 변수에 대응하는 `"response.status"`와 더불어 `"response.object"` 타입의 항목을 수반하게 됩니다. request.set 타입의 항목은 해당 변수에 대응하는 `"response.status"` 항목만을 수반합니다. 이는 request.get이 변수의 값을 취득하기 위한 명령이기 때문에 그 결과로 변수의 값을 돌려 주는 것입니다. request.set의 경우 변수의 값을 설정하기 위한 명령이 잘 적용되었는지 결과를 돌려주는 것으로 충분합니다.
 
-response.status 타입의 항목과 response.object 타입의 항목은 모두 `path`와 `value` 속성을 갖습니다.
+response.status 타입의 항목과 response.object 타입의 항목은 모두 `path`와 `value` 속성을 갖습니다. 다만 response.status 항목의 value가 200이 아닌 경우 response.object 항목이 아예 없는 것이 정상입니다.
 
 ### Object value
 
