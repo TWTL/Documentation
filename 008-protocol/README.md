@@ -98,7 +98,7 @@ request.set과 response.object 항목의 `value` 필드는 `path` 필드의 문�
 
 구체적으로 이 값은 `path` 필드에 지정한 경로명의 변수 타입과 일치해야 합니다. 변수의 원시 타입은 [TWTL Doc 009](/009-variables)에 정의된 바와 같이 다음과 같습니다.
 
-* Integer32, Uint32, Float32. 각각 number에 대응하며, ECMAScript Number 타입이 IEEE 754 binary64 형식으로 저장되로 처리될 것으로 규정되어 있기 때문에, 이 타입들 각각의 범위 내에 있는 값 모두를 정확히 나타낼 수 있습니다. Integer32, Uint32로 지정된 값의 경우 소수점 없이 표기되어야 합니다.
+* Integer32, Uint32, Float32. 각각 number에 대응하며, ECMAScript Number 타입이 IEEE 754 binary64 형식으로 저장되고 처리될 것으로 규정되어 있기 때문에, 이 타입들 각각의 범위 내에 있는 값 모두를 정확히 나타낼 수 있습니다. Integer32, Uint32로 지정된 값의 경우 소수점 없이 표기되어야 합니다.
 * String. string에 대응합니다. 이 값은 이스케이프 문자 `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`를 포함하거나, `\uXXXX`로 지정된 임의의 UTF-16 코드포인트를 포함할 수 있습니다. 참고로, UTF-16 서로게이트 시퀀스는 `\uXXXX` 코드포인트 두 개로 표현됩니다.
 * Boolean. boolean(필드 값 `true`, `false`)에 대응합니다.
 * Object. object에 대응하며 변수의 정의에 따라 하위 변수의 이름을 필드로 갖고 하위 변수의 값을 그 필드의 속성값으로 갖는 오브젝트 값입니다.
