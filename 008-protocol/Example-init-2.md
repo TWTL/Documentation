@@ -1,6 +1,6 @@
 TWTL Doc 008 Protocol - 구역 본문
 
-# 예시: <init>, 상황 2
+# 예시: \<init\>, 상황 2
 
 이 예시에서는 `<init>` 시나리오에서 GUI가 보낼 모든 메시지 항목을 하나의 Request 메시지에 보내는 경우를 가정하였습니다. 이 경우 Engine 역시 하나의 Response 메시지로 응답하게 됩니다.
 

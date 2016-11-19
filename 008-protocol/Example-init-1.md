@@ -1,6 +1,6 @@
 TWTL Doc 008 Protocol - 구역 본문
 
-# 예시: <init>, 상황 1
+# 예시: \<init\>, 상황 1
 
 이 예시에서는 `<init>` 시나리오에서 GUI-Engine 사이에서 교환될 JSON 예시 메시지를 모두 나열했습니다.
 

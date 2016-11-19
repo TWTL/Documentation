@@ -120,13 +120,13 @@ response.status 항목의 value는 변수가 아닙니다. 이 값은 명령의 
 
 ## 예시
 
-### 예시: <init>, 상황 1
+### 예시: \<init\>, 상황 1
 
 이 예시에서는 `<init>` 시나리오에서 GUI-Engine 사이에서 교환될 JSON 예시 메시지를 모두 나열했습니다.
 
 이 구역의 본문은 [Example-init-1.md](./Example-init-1.md)입니다.
 
-### 예시: <init>, 상황 2
+### 예시: \<init\>, 상황 2
 
 이 예시에서는 `<init>` 시나리오에서 GUI가 보낼 모든 메시지 항목을 하나의 Request 메시지에 보내는 경우를 가정하였습니다. 이 경우 Engine 역시 하나의 Response 메시지로 응답하게 됩니다.
 

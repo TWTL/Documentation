@@ -21,12 +21,12 @@ TWTL Doc 009
 모든 non-terminal node는 내부에 여러 값이 있는 복합 값(complex value)을 갖습니다. 복합 값은 (1) 서로 다른 이름이 붙은 여러 타입의 값들의 순서 없는 모음이거나, (2) 개별적으로 이름이 붙지 않는 일정한 타입의 값들의 순서 있는 모음입니다. 전자를 Object, 후자를 List라 합니다.
 
 * Object(...)
-* List<...>
+* List\<...\>
 
 Object 타입의 값은 하위 노드의 이름을 붙여 나타내며, 하위 노드에 대해 따로 기술합니다. 한편 List 타입은 내부 타입의 이름을 붙여 나타냅니다. 예를 들면 다음과 같습니다.
 
 * 이름이 Foo, Bar, Baz인 키를 갖는 Object: Object(Foo, Bar, Baz)
-* 타입이 SomeType인 값을 갖는 List: List<SomeType>
+* 타입이 SomeType인 값을 갖는 List: List\<SomeType\>
 
 어떤 node에든 임의로 접근할 수 있으며 terminal node를 통해 접근해야만 하는 것은 아닙니다. 다만 개발 단계에 따라 실제로 접근 가능하도록 구현되는 노드는 제한적일 수 있습니다.
 
@@ -102,7 +102,7 @@ Object 타입의 값은 하위 노드의 이름을 붙여 나타내며, 하위 �
 기본값: `FALSE`
 
 #### /Engine/Log/
-* Type: List<String>
+* Type: List\<String\>
 * Access: rw
 
 기본값: 정의되지 않음.
@@ -112,7 +112,7 @@ Object 타입의 값은 하위 노드의 이름을 붙여 나타내며, 하위 �
 * Type: Object(ConnectingList)
 
 #### /Net/ConnectingList/
-* Type: List<String>
+* Type: List\<String\>
 * Access: rw
 
 기본값: 정의되지 않음.
