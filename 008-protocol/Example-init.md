@@ -13,7 +13,7 @@ GUI → Engine
 	"contents": [
 		{
 			"type": "request.get",
-			"name": "/Engine/Name/"
+			"path": "/Engine/Name/"
 		}
 	]
 }
@@ -28,12 +28,12 @@ Engine → GUI
 	"contents": [
 		{
 			"type": "response.status",
-			"name": "/Engine/Name/",
+			"path": "/Engine/Name/",
 			"value": 200
 		},
 		{
 			"type": "response.object",
-			"name": "/Engine/Name/",
+			"path": "/Engine/Name/",
 			"value": "TWTL"
 		}
 	]
@@ -49,7 +49,7 @@ GUI → Engine
 	"contents": [
 		{
 			"type": "request.get",
-			"name": "/Engine/Version/"
+			"path": "/Engine/Version/"
 		}
 	]
 }
@@ -64,12 +64,12 @@ Engine → GUI
 	"contents": [
 		{
 			"type": "response.status",
-			"name": "/Engine/Version/",
+			"path": "/Engine/Version/",
 			"value": 200
 		},
 		{
 			"type": "response.object",
-			"name": "/Engine/Version/",
+			"path": "/Engine/Version/",
 			"value": "1.0"
 		}
 	]
@@ -85,7 +85,7 @@ GUI → Engine
 	"contents": [
 		{
 			"type": "request.get",
-			"name": "/Engine/RequestPort/"
+			"path": "/Engine/RequestPort/"
 		}
 	]
 }
@@ -100,12 +100,12 @@ Engine → GUI
 	"contents": [
 		{
 			"type": "response.status",
-			"name": "/Engine/RequestPort/",
+			"path": "/Engine/RequestPort/",
 			"value": 200
 		},
 		{
 			"type": "response.object",
-			"name": "/Engine/RequestPort/",
+			"path": "/Engine/RequestPort/",
 			"value": 5259
 		}
 	]
@@ -121,7 +121,7 @@ GUI → Engine
 	"contents": [
 		{
 			"type": "request.set",
-			"name": "/Engine/TrapPort/",
+			"path": "/Engine/TrapPort/",
 			"value": 48207
 		}
 	]
@@ -137,7 +137,7 @@ Engine → GUI
 	"contents": [
 		{
 			"type": "response.status",
-			"name": "/Engine/TrapPort/",
+			"path": "/Engine/TrapPort/",
 			"value": 200
 		}
 	]
