@@ -21,6 +21,5 @@ TWTL 소프트웨어 시스템의 전체적 구조에 대해 기술합니다. �
 
 ## 작업환경
 
-* Engine : C/C++
-
-* GUI : Unity
+* Engine : C/C++
+* GUI : Unity
