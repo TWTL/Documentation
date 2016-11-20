@@ -15,7 +15,11 @@ TWTL 프로젝트에서 작성하는 프로그램 소스 코드에 대한 규약
  기본적으로 C# Standard 규약을 따른다.
 
 
-### Coding convention elements
+##  Communal Coding convention elements
+
+1. 코딩 스타일
+
+ Visual studio의 기본인 BSD를 따른다.
 
 1. 들여쓰기
 
@@ -29,4 +33,10 @@ TWTL 프로젝트에서 작성하는 프로그램 소스 코드에 대한 규약
 
  * 공백을 허용하지 않는다.
  
- * 상수는 대문자와 언더스코어
+ * 상수는 대문자와 언더스코어(\_)를 사용한다.
+ 
+   ex. SYMBOLIC\_CONSTANT;
+  
+ * 변수명이나 함수명은 카멜 표기법을, 기타는 파스칼 표기법을 따른다.
+ 
+ 
