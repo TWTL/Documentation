@@ -39,6 +39,12 @@ TWTL 프로젝트에서 작성하는 프로그램 소스 코드에 대한 규약
   
  * 변수명이나 함수명은 카멜 표기법을, 기타는 파스칼 표기법을 따른다.
  
+   ex. int exampleOfVariable;
+
+       void exampleOfFuncttion;
+       
+       struct ExampleOfStruct;
+ 
  * 배열은 복수형으로 표기한다.
  
    ex. bags;
