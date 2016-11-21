@@ -12,23 +12,24 @@ TWTL 프로젝트의 저장소는 다음과 같습니다.
 * [TWTL/Documentation](https://github.com/TWTL/Documentation)
 * [TWTL/Engine](https://github.com/TWTL/Engine)
 * [TWTL/GUI](https://github.com/TWTL/GUI)
+* [TWTL/Service](https://github.com/TWTL/Service)
 * [TWTL/TestSuite](https://github.com/TWTL/TestSuite)
+
+### Build
+
+전체 빌드, 테스트, 문서와의 통합 및 패키징을 위한 모듈 저장소입니다.
 
 ### Documentation
 
 본 문서를 포함, 프로젝트 전체 진행에 있어 필요한 모든 문서를 작성하는 저장소입니다. TWTL Doc 001과 후속 문서에서 기술합니다.
 
-### Engine, GUI
+### Engine, GUI, Service
 
-보안 솔루션 소프트웨어 TWTL의 본체를 이룰 두 부분인 엔진과 GUI의 소스 코드 개발을 두 저장소에서 나누어 각각 구성합니다. 엔진과 GUI에 대해서는 추후 문서에서 기술합니다.
+보안 솔루션 소프트웨어 TWTL의 본체를 이룰 두 부분인 엔진과 GUI, 그리고 Service의 소스 코드 개발을 세 저장소에서 나누어 각각 구성합니다. 엔진과 GUI, Service에 대해서는 [TWTL Doc 006](/006-architecture)에서 기술합니다.
 
 ### TestSuite
 
 주로 엔진의 기능이나 엔진-GUI 연결의 안정성 등을 테스트하기 위해 작성되는 코드입니다. 테스트에 대해서는 추후 문서에서 기술합니다.
-
-### Build
-
-전체 빌드, 테스트, 문서와의 통합 및 패키징을 위한 모듈 저장소입니다.
 
 ## Git 컨벤션
 
