@@ -15,5 +15,6 @@
 * 008 [Protocol](/008-protocol)
 * 009 [Engine Variables](/009-variables)
 * 010 [Engine Database](/010-database)
-* 011 [The TWTL Graphical User Interface](/011-gui)
-* 012 reserved
+* 011 [Engine Feature: Command line interface](/011-enginecli)
+* 012 [GUI Feature: Debug console](/012-guiconsole)
+* 013 [Installer](/013-installer)
