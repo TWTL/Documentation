@@ -18,3 +18,7 @@
 * 011 [Engine Feature: Command line interface](/011-enginecli)
 * 012 [GUI Feature: Debug console](/012-guiconsole)
 * 013 [Installer](/013-installer)
+* 014 [Engine Feature: Registry](/014-enginereg)
+* 015 [Engine Feature: Network](/015-enginenet)
+* 016 [Engine Feature: Performance](/016-engineperf)
+* 017 [Engine Feature: Filesystem](/017-enginefiles)
