@@ -429,7 +429,7 @@ UserRunOnce 목록입니다.
 
 TBD.
 
-### /Perf/Kill/
+#### /Perf/Kill/
 
 * Type: Opt\<Object(PID@Integer)\>
 * Access: rw
@@ -438,14 +438,14 @@ TBD.
 
 Kill 대상 프로세스의 PID를 설정하면 엔진은 즉시 해당 PID를 보유한 프로세스를 Kill한다.
 
-### /Perf/RegisterAutoKill/
+#### /Perf/RegisterAutoKill/
 
 * Type: List\<Object(ProcessImagePath@String)\>
 * Access: i
 
 AutoKill 대상 Executable image의 파일시스템 path를 담고 있는 큐이며 엔진은 원소가 추가되는 순간부터 해당 PID를 보유한 프로세스를 Kill한다. 이 큐에는 항목을 추가하는 것만 허용되며 큐의 내용을 볼 수도 원소를 지울 수도 없다.
 
-### /Perf/RemoveExecImage/
+#### /Perf/RemoveExecImage/
 
 * Type: Opt\<Object(ProcessImagePath@String)\>
 * Access: rw
@@ -454,17 +454,17 @@ AutoKill 대상 Executable image의 파일시스템 path를 담고 있는 큐이
 
 Executable image의 파일시스템 path 설정하면 엔진은 즉시 해당 경로의 파일을 삭제한다.
 
-### /Perf/PIDByImageName/
+#### /Perf/PIDByImageName/
 
 * Type: Func(ImageName@String)\<List\<Uint32\>\>
 * Access: a
 
-### /Perf/ImagePathByPID/
+#### /Perf/ImagePathByPID/
 
 * Type: Func(PID@Uint32)\<String\>
 * Access: a
 
-### /Perf/ResolveImagePath/
+#### /Perf/ResolveImagePath/
 
 * Type: Func(ImagePath@String)\<String\>
 * Access: a
