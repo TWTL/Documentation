@@ -187,6 +187,66 @@ response.status 항목의 value는 변수가 아닙니다. 이 값은 명령의 
 
 ## 시나리오
 
+Engine과 GUI 양쪽 모두 상태 변화를 일으키도록 되어 있는 통신 시나리오이다.
+
+* \<init\>
+* \<fin\>
+
+### \<init\>
+
+#### 선결사항
+
+* Engine이 켜진 상태
+
+#### 트리거
+
+* GUI 시작
+
+#### 순서
+
+1. GUI는 네트워크 스택을 점검하고 임의의 TrapPort를 listen한다.
+2. GUI가 Engine이 listen하고 있는 RequestPort에 connect한다.
+3. Engine과 GUI가 다음 Request/Response 메시지 항목을 교환한다.
+    1. /Engine/Name
+        * GUI의 Request: `{ "type": "request.get", "path": "/Engine/Name" }`.
+        * Engine의 Response: `{ "type": "response.status", "path": "/Engine/Name", value: 200 }`, `{ "type": "response.object", "path": "/Engine/Name", value: "TWTL" }`.
+    2. /Engine/Version
+        * GUI의 Request: `{ "type": "request.get", "path": "/Engine/Version" }`.
+        * Engine의 Response: `{ "type": "response.status", "path": "/Engine/Version", value: 200 }`, `{ "type": "response.object", "path": "/Engine/Version", value: "1.0" }`.
+    3. /Engine/RequestPort
+        * GUI의 Request: `{ "type": "request.get", "path": "/Engine/RequestPort" }`.
+        * Engine의 Response: `{ "type": "response.status", "path": "/Engine/RequestPort", value: 200 }`, `{ "type": "response.object", "path": "/Engine/RequestPort", value: 5259 }`.
+    4. /Engine/TrapPort
+        * GUI의 Request: `{ "type": "request.set", "path": "/Engine/TrapPort", "value": (GUI가 listen 중인 TrapPort 번호) }`.
+        * Engine의 Response: `{ "type": "response.status", "path": "/Engine/TrapPort", value: 200 }`.
+4. Engine이 GUI가 listen하고 있는 TrapPort에 connect한다.
+
+### \<fin\>
+
+#### 선결사항
+
+* Engine이 켜진 상태
+* GUI가 켜진 상태
+* Engine과 GUI가 \<init\>을 이미 수행했음
+
+#### 트리거
+
+* GUI 종료
+    * 사용자가 GUI 창을 닫음
+    * 시스템 종료로 인한 시그널 발생
+* Engine 종료
+    * 시스템 종료로 인한 시그널 발생
+
+#### 순서
+
+의도된 GUI 종료의 경우:
+
+1. TrapPort를 리셋한다.
+    * GUI의 Request: `{ "type": "request.set", "path": "/Engine/TrapPort", "value": 0 }`.
+    * Engine의 Response: `{ "type": "response.status", "path": "/Engine/TrapPort", value: 200 }`.
+2. Engine은 GUI가 연 TrapPort에 connect한 socket을 close한다.
+3. GUI는 Engine이 연 RequestPort에 connect한 socket을 close한다.
+
 ## 예시
 
 ### 예시: \<init\>, 상황 1
