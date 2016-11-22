@@ -2,45 +2,218 @@
 
 TWTL Doc 009
 
-엔진 내부에서 관리되는 변수에 관한 설명과 그 목록입니다.
+엔진 내부에서 관리되고 GUI를 통해 접근하는 변수에 관한 설명과 그 목록입니다.
 
 ## Overview
 
+### Introduction
+
+변수는 읽고 쓸 수 있는 값을 의미합니다. 우리는 미리 정해 둔 어떤 값을 넣고 빼면서 작동하는 소프트웨어 시스템을 조작하고 그 결과를 관측할 수 있습니다. 변수 체계의 범위에 따라 차이가 있지만, 소프트웨어 시스템에서 값을 읽고 쓰는 것은 사실상 시스템이 할 수 있는 모든 일에 관련되며, 종종 시스템에 설계되지 않은 동작을 초래하기도 합니다. 변수 체계는 소프트웨어 시스템의 기능과 동작에 대한 가장 기본적인 모델입니다.
+
+이 변수 체계는 본 프로젝트의 주 산출물을 설계하는 과정에서 탄생한 졸작이지만, 소프트웨어 시스템에서 주 기능 모듈의 역할을 추상화하는 데 있어 최대한의 가능성을 일관성 있게 담으려 한 결과입니다. 모듈의 동작을 외부에서 제어하기 위해 여러 구조화된 값을 읽고 써야 할 때, 매개변수들에 이름을 붙이고 대강의 타입과 구조를 제시하고 나열하는 것만으로는 복잡도를 제어할 수 없습니다. 이 문서에서는 보다 견고한 변수 체계를 확립함으로써 문제를 해결하는 실마리를 찾고자 합니다.
+
 ### Structure and types
 
-변수 리스트는 트리의 구조를 가지고 있으며, 트리이기 때문에 terminal node와 non-terminal node로 구성됩니다.
+*요약: 변수는 트리 구조로 상하 포함 관계를 이루며 단말 노드 변수는 원시 타입, 비단말 노드 변수는 복합 타입을 갖습니다.*
 
-모든 terminal node는 원시 값(primitive value)을 가집니다. 사용되는 원시 값의 종류는 다음과 같습니다.
+전체 변수는 트리 구조로 되어 있으며, 트리이기 때문에 단말 노드 (terminal node) 와 비단말 노드 (non-terminal node) 로 구성됩니다. 어떤 node에든 임의로 접근할 수 있으며 terminal node를 통해 접근해야만 하는 것은 아닙니다. 다만 개발 단계에 따라 실제로 접근 가능하도록 구현되는 노드는 제한적일 수 있습니다.
 
-* Integer32
-* Uint32
-* Float32
-* String
-* Boolean
+모든 단말 변수는 원시 값 (primitive value) 을 가집니다. 원시 타입의 종류는 다음과 같습니다.
 
-모든 non-terminal node는 내부에 여러 값이 있는 복합 값(complex value)을 갖습니다. 복합 값은 (1) 서로 다른 이름이 붙은 여러 타입의 값들의 순서 없는 모음이거나, (2) 개별적으로 이름이 붙지 않는 일정한 타입의 값들의 순서 있는 모음입니다. 전자를 Object, 후자를 List라 합니다.
+* Integer32. 32비트를 사용하고 최상위 비트를 음의 부호 비트로 삼아 양수는 이진법으로, 음수는 이의 보수로 나타내는 정수.
+* Uint32. 32비트를 사용하여 서른두 자리 이진법으로 나타낸 부호 없는 정수. 자연수의 환을 이룸.
+* Float32. IEEE 754 binary32를 따르는 부동소숫점 표현. 실수 값에 대한 근사.
+* String. 임의의 UTF-16 코드열로 표현한 문자열; 다만 `\u0000`은 포함하지 않도록 함.
+* Boolean. 논리값; TRUE와 FALSE 중 하나의 값.
+
+모든 비단말 변수는 내부에 여러 값이 있는 복합 값 (compound value) 을 갖습니다. 복합 값은 (1) 서로 다른 이름이 붙은 여러 타입의 값들의 순서 없는 모음이거나, (2) 개별적으로 이름이 붙지 않는 일정한 타입의 값들의 순서 있는 모음입니다. 전자의 타입을 Object, 후자의 타입을 List라 합니다.
+
+원시 타입의 경우 하나의 타입명만을 가지며 이를 기초 타입명 (base typename) 이라고 합니다. 복합 타입의 경우 기초 타입명과 완결된 타입명 (full resolved typename) 을 갖습니다. Object와 List는 기초 타입명이며, 다음과 같이 타입명을 완결할 수 있습니다.
 
 * Object(...)
 * List\<...\>
 
-Object 타입의 값은 하위 노드의 이름을 붙여 나타내며, 하위 노드에 대해 따로 기술합니다. 한편 List 타입은 내부 타입의 이름을 붙여 나타냅니다. 예를 들면 다음과 같습니다.
+Object 타입은 하위 변수의 이름을 붙여 나타내며, 하위 변수에 대해 따로 기술합니다. 한편 List 타입은 내부 타입의 이름을 붙여 나타냅니다. 예를 들면 다음과 같습니다.
 
-* 이름이 Foo, Bar, Baz인 키를 갖는 Object: Object(Foo, Bar, Baz)
-* 타입이 SomeType인 값을 갖는 List: List\<SomeType\>
+* 하위 키가 Foo, Bar, Baz인 갖는 Object: Object(Foo, Bar, Baz)
+    * 변수 Foo, Bar, Baz의 타입이 각각 Tfoo, Tbar, Tbaz인 경우 Object(Foo@Tfoo, Bar@Tbar, Baz@Tbaz)로 더 풀어 쓸 수 있습니다.
+* 타입이 SomeType인 값들을 원소로 갖는 List: List\<SomeType\>
 
-어떤 node에든 임의로 접근할 수 있으며 terminal node를 통해 접근해야만 하는 것은 아닙니다. 다만 개발 단계에 따라 실제로 접근 가능하도록 구현되는 노드는 제한적일 수 있습니다.
+일반적으로 Object 타입의 값에서 하위 키는 유일하고 순서가 없는 것으로 취급되며 각 하위 변수는 별도의 타입을 갖습니다. List 타입의 값에서 하위 값은 모두 같은 타입을 가지며 중복되어도 무방하고 순서가 있습니다. 그러나 어떤 List 타입의 값은 변수의 정의에 따라 모든 원소가 유일하거나 순서가 없거나 혹은 둘 다인 것으로 취급될 수도 있습니다. 이런 경우 List 타입의 어떤 변수는 값의 유일성을 확보하기 위해 값의 순서에 따라 잘 정렬되어 있는 상태를 유지할 수 있으며, 값을 순서를 어길 수 있습니다.
+
+모든 노드는 타입에 따라 일정한 속성(property)을 갖도록 정의됩니다. 노드의 속성은 노드의 값과 타입, 상태 등으로부터 유래하는 읽기 전용인 값입니다. 속성들은 노드의 하위 노드로 취급할 수 있으며 변수와 함께 트리를 이루지만, 변수와는 다릅니다. 트리의 구조에 대한 설명은 경로의 정의에 관한 다음 단락으로 이어집니다.
+
+### Path
+
+*요약: 루트 노드부터 시작해 해당 변수 노드에 도달할 때까지의 모든 키를 차례대로 연결해서 경로를 얻습니다. Object의 이름은 `/`, List의 인덱스는 `$`로, 속성의 이름은 `!`로 연결합니다.*
+
+모든 변수는 키(key)와 경로(path)를 갖습니다. 트리 구조에서 키는 상위 노드를 공유하는 변수들을 서로 구분하는 역할을 합니다.
+
+* 복합 타입의 변수는 비단말 노드로, 하위 변수에 키를 부여하는 방법이 필요합니다.
+    * Object 타입의 하위 변수가 갖는 키는 `[A-Za-z]+`를 준수하는 식별자이며 이름짓기는 약어에 예외를 둔 PascalCase를 따릅니다. 이 하위 변수의 키를 이름(name)이라고도 합니다.
+    * List 타입의 하위 변수가 갖는 키는 `[1-9][0-9]*`를 따르는 십진수 값이며 리스트에서 원소의 위치를 세는 방법은 0-based indexing을 따릅니다. 이 하위 변수의 키를 인덱스(index)라고도 합니다.
+* 복합 타입이 아닌 변수는 변수 트리에서 단말 노드로, 하위 변수가 없으므로 이 밖에 키를 부여하는 방법은 없습니다.
+* 변수 트리의 확장인 변수-속성 트리는 임의의 노드가 속성으로 하위 노드를 갖습니다.
+    * 속성 이름 역시 변수 이름과 마찬가지로 `[A-Za-z]+`를 준수하며 이름짓기는 약어에 예외를 두지 않은 camelCase를 따릅니다.
+* 변수의 타입에 무관하게 무한히 확장되는 트리를
+* 따라서 루트 노드를 제외한 모든 변수가 키를 갖습니다.
+* 루트(root) 노드는 부모 노드가 없으므로, 최상위 변수는 인덱스가 필요 없습니다.
+    * 최상위 변수는 인덱스가 없는 익명 변수로, Object 타입이며, 그 경로는 `/`입니다.
+
+루트 노드로부터 출발해, 임의의 비단말 노드의 경로를 안다면 하위 변수에 대한 경로를 다음과 같이 지정합니다. 이로써 모든 변수가 경로를 갖습니다.
+
+* 변수의 경로가 `/...%SomeObject/`이고 Object 타입이며 키가 A, B, C인 하위 변수를 가진다면,
+    * 이 변수의 타입은 Object(A, B, C)입니다.
+    * 변수 A의 경로는 `/...%SomeObject/A/`입니다.
+    * 변수 B의 경로는 `/...%SomeObject/B/`입니다.
+    * 변수 C의 경로는 `/...%SomeObject/C/`입니다.
+* 변수의 경로가 `/...%SomeList/`이고 List이며 크기가 3이며 원소의 타입이 Object(D, E, F)라면,
+    * 이 변수의 타입은 List\<Object(D, E, F)\>입니다.
+    * 리스트 내부에 대한 경로는 순서대로 `/...%SomeList$0/`, `/...%SomeList$1/`, `/...%SomeList$2/`이며 각각의 타입은 Object(D, E, F)입니다.
+* 변수의 경로가 `/...%SomeVar/`이고 이 변수의 `someProp`이라는 속성이 있다면 이 속성의 경로는 `/...SomeVar!someProp/`입니다.
+    * 어떤 List\<Integer32\> 변수 `/...%SomeList/`의 속성 `size`의 경로는 `/.../SomeList!size/`이고 타입은 Uint32입니다.
+        * (빈 리스트가 아닌 경우) `/...%SomeList$0/`의 타입은 Integer32입니다.
+        * (빈 리스트가 아닌 경우) `/...%SomeList$0!min/`의 타입은 Integer32이고 그 값은 -2147483648일 수 있습니다.
+    * 어떤 String 변수 `/...%SomeString/`의 속성 `propList`의 경로는 `/...%SomeString!propList/`입니다.
+        * `/...%SomeString!propList/`의 타입은 List\<String\>이고 값은 ["type", "propList", "lastChng", "lastChngH", "isNullable", "length"]입니다.
+        * `/...%SomeString!propList!propList/`의 타입은 List\<String\>이고 값은 ["type", "propList", "lastChng", "lastChngH", "isNullable", "size", "itemType"]입니다.
+        * `/...%SomeString!propList!propList!propList/`의 타입은 List\<String\>이고 값은 ["type", "propList", "lastChng", "lastChngH", "isNullable", "size", "itemType"]입니다.
+        * `/...%SomeString!propList!itemType/`의 타입은 String이고 값은 "String"입니다.
+        * `/...%SomeString!propList!size/`의 타입은 Uint32이고 값은 6입니다.
+
+`...`는 생략되었음을 의미하며, `%`는 경로명을 만드는 연결 문자로 실제로는 `/`, `$`, `!` 중 하나의 문자입니다. 즉 Object 타입 변수인 `/...%SomeObject/`에 대해 정의한 위의 내용은, 노드가 Object 타입이라면 `/Foo/Bar/BazObject/SomeObject/`, `/Foo/Bar/BazList$12345679/`, `/Foo/Bar/Baz!someProp/`중 어떤 것에 대해서도 성립합니다. 이때 각각의 경우에서 하위 노드 A의 경로는 `/Foo/Bar/BazObject/SomeObject/A/`, `/Foo/Bar/BazList$12345679/A/`, `/Foo/Bar/Baz!someProp/A/`가 될 것입니다.
+
+모든 변수가 경로를 가지며 이는 유일하기 때문에, 많은 문서들에서 변수와 경로에 대해 사실상 동일하게 취급하고 표현할 수 있습니다.
+
+문서에서 경로에 명시하지 않아도 되는 부분이나 생략할 부분에 대해서는 `*`를 쓰는 것을 관습으로 합니다.
+
+### Pathspec
+
+*요약: 경로사양은 경로 꼴의 문자열로 여러 변수를 한번에 선택하기 위해 사용됩니다.*
+
+경로를 이용하는 경우 복합 변수 노드를 선택하면 하위 변수의 모든 노드가 그에 포함되는 기본적인 방식이 전부입니다. 경로사양(pathspec)은 경로를 확장한 형식으로, 다양한 방식으로 여러 노드를 한번에 지정할 수 있도록 만들어졌습니다.
+
+경로사양은 경로와 마찬가지로 전체 트리 중 일부분에 대한 심볼릭 참조이며 권한에 따라 값을 읽고 쓸 수 있습니다. 경로사양을 이용해 선택된 노드들의 타입은 항상 정확하게 정의됩니다. 그러나 경로사양은 노드들의 참조 유일성을 보장해 주지 못합니다. 경로사양으로 선택된 트리에서 여러 이름으로 참조하고 있는 대상이 사실은 하나의 변수일 수 있으며, 동시에 서로 다른 값을 한 변수에 쓰는 경우 그 결과로 변수의 값이 무엇으로 정해질지는 모릅니다. 여러 참조 이름에 지정한 값들 중 하나일테지만 구현에 따라 그 중 어느 것도 아닐 수도 있습니다. 다만 타입만은 유지됩니다.
+
+#### 키 결합
+
+키 결합은 키 결합 연산자 `,`에 의해 이루어집니다. Object(A, B, C) 타입 노드 `/...%SomeObject/`의 키 A, B, C에 대해 `/...%SomeObject/A,B/`는 `/...%SomeObject/`에서 하위 변수 A, B만 고르고 C는 고르지 않는 것이며 타입은 Object(A, B)입니다.
+
+`/Foo/Bar/`의 값을 `{ "A": "hello", "B": "world", "C": ",!" }`라 하면, `/Foo/Bar/A/`는 `"hello"`, `/Foo/Bar/B/`는 `"world"`, `/Foo/Bar/A,C/`는 `{ "A": "hello", "C": ",!" }`가 됩니다.
+
+키 결합 연산자의 피연산자 키는 꼭 변수 이름일 필요는 없습니다. 키 별명 연산자 `^`을 이용해 기존 하위 변수의 이름을 바꾸거나, 속성 이름을 변수 이름 형식에 맞게 바꿀 수 있습니다. 위 예의 `/Foo/Bar/`에서, `/Foo/Bar/A,size^Size/`는 Object(A@String, Size@Uint32) 타입의 값 `{ "A": "hello", "Size": 3 }`가 됩니다. `/Foo/Baz/`가 List\<Integer32\> 타입의 값 `[3, 4, 1, 5, 2]`라면, `/Foo/Baz^BazValue,(Baz!size)^BazSize/`는 Object(BazValue@List\<Integer32\>, BazSize@Uint32) 타입의 값 `{ "BazValue": [3, 4, 1, 5, 2], "BazSize": 5 }`가 됩니다. `/Foo/Baz^BazValue,Baz!size^BazSize/`나 `/Foo/Baz^BazValue,(Baz!size^BazSize)/`는 오류입니다.
+
+이 중 괄호 `()`가 먼저 처리되며, 키 별명 연산자 `^`의 우선순위가 가장 높고, 키 결합 연산자 `,`의 순위가 그 다음입니다. 키 연결 문자 `/`, `$`, `!`가 마지막입니다.
+
+키 연결 문자는 경로사양을 여러 구간으로 나눕니다. 키 결합 연산자 또는 키 별명 연산자가 포함된 모든 구간은 상위 노드와의 연결 문자가 `/`여야 합니다. 상위 노드와의 연결 문자는 `!`일 수 없는데, 타입에 따라 어떤 속성 이름을 가질지 정해지는 것이기 때문이며, 키 결합이나 키 별명 연산자를 이용해 새로운 키를 만들면 그것을 속성 이름으로 삼을 수 없는 것입니다. 한편 List는 키 이름이 없으므로 `$`가 되지 못하는 것은 자명합니다. 한편 키 별명 연산자의 오른쪽 피연산자는 변수 이름 형식에 맞는 이름이어야 합니다.
+
+키 결합 연산자의 피연산자나 키 결합 연산자의 왼쪽 피연산자는, 해당 연산자가 포함된 키 검색 구간에서 값을 찾을 수 있는 경로사양입니다. 따라서 상위 노드를 공유하는 하위 변수 이름뿐만 아니라 속성 이름, 하위 변수의 하위 변수 등을 모두 피연산자로 쓸 수 있습니다. (이름짓기 규약이 다르므로 변수 이름과 속성 이름의 이름공간은 겹치지 않습니다.) 그러나 이 피연산자에 하위 변수의 속성이나 하위 변수의 하위 변수 등을 실제로 놓기 위해서는 키 연결 문자가 들어가게 되고, 연산자 우선순위에 의해 식의 구조가 흐트러지게 됩니다. 이것을 방지하기 위해 위와 같이 괄호를 씁니다. 괄호는 짝이 맞아야 하며 몇 겹으로 감싸도 내용은 변하지 않습니다.
+
+#### 슬라이스
+
+슬라이스는 슬라이스 연산자 `:`과 역순 슬라이스 연산자 `::`에 의해 이루어집니다. List\<T\> `/...%SomeList/`에 대해 `/...%SomeList$a:b/`은 반폐구간 \[a, b) 내의 자연수를 순서대로 인덱스로 하는 내부 값들을 가리키는 리스트이며 타입은 같은 List\<T\>입니다.
+
+`/Foo/Bar/`가 List\<Integer32\> 타입의 값 `[1, 3, 2, 6, 5, 4]`일 때 `/Foo/Bar$1:4/`의 값은 `[3, 2, 6]`, `/Foo/Bar$4:1/`의 값은 `[5, 4, 1]`입니다. `/Foo/Bar$1::4/`의 값은 `[3, 1, 4]`, `/Foo/Bar$4::1/`의 값은 `[5, 6, 2]`입니다.
+
+TBD.
+
+#### 필터
+
+필터는 필터 연산자 `?`, 논리 연산자 `&`와 `|`, 그 밖의 값 연산자들에 의해 이루어집니다. 사용할 수 있는 연산자는 다음과 같습니다.
+
+* Integer32/Uint32 이항 연산자 `+`, `-`, `<<`, `>>`, `<>` (결과: 피연산자와 같은 타입)
+* Integer32/Uint32/Float32/String/Boolean 비교 연산자 `=`, `<=`, `>=`, `~=` (결과: 논리 타입)
+
+TBD.
+
+### Nullability
+
+*요약: Opt는 단말 변수를 위한 복합 타입으로, Opt\<SomeType\> 타입의 값은 NULL이거나 SomeType 타입의 값 ...입니다.*
+
+어떤 변수는 타입에 따라 정의된 값을 갖지 못하는 상태일 수 있습니다. 이를 위해 해당 변수의 값이 유효한지를 나타내는 변수를 별도로 관리하는 대신, 상태에 따라 변수가 타입에 정의되지 않은 무의미한 값을 가질 수 있도록 할 수 있습니다. 이때 무의미한 값을 NULL이라고 하며, NULL 상태의 변수를 정상 상태로 해석하려는 시도는 시스템에 정의되지 않은 동작을 (undefined behavior) 초래할 수 있습니다. (주: ECMAScript의 undefined와는 다릅니다.)
+
+SomeType 타입을 참조하여 해당 타입의 모든 정의된 값을 가질 수 있으면서, SomeType에서 정의되지 않은 상태일 떄 NULL 값을 가질 수 있도록 하는 타입의 값은 다음과 같이 나타냅니다.
+
+* Opt\<SomeType\>
+
+이론적으로 Opt\<SomeType\>은 SomeType과 Null이라는 두 타입으로 이루어진 합 타입 (sum type) 으로 볼 수 있습니다. 여기서 Null은 단위 타입 (unit type) 으로 이 타입의 값은 항상 같은 값이며 이것을 NULL로 해석하고, SomeType 타입의 값 a는 SomeType(a)로 쓰고 해석에 있어 SomeType을 참조합니다.
+
+Null 타입은 원시 타입의 일종입니다. 따라서 Null을 원시 타입으로 정의하고 합 타입 연산을 정의해서, NULL을 가져도 되는 변수의 타입을 정의해야 할 때, 다른 타입과 Null에 대한 합 타입으로 정의하면 그만입니다. 그러나 이런 문제를 피해 갈 수 없습니다.
+
+* 임의의 두 타입(또는 그 이상)에 대한 합 타입을 정의할 수 있으려면 이름을 붙인 분리합집합이 필요하고, 이는 곱 타입인 Object에 그러한 의미론을 부여하는 것과 다를 것이 없습니다. `{ "IsNone": true, "SomeTypeValue": ... }`와 `{ "IsNone": false, "SomeTypeValue": ... }`을 구분하는 것과, `{ "Null": null }`와 `{ "SomeType": ... }`을 구분하는 것은 차이가 없기 때문입니다. 이는 NULL이라는 값을 도입한 의도와 어긋납니다. 서로 다른 타입에 대한 합 타입을 정의하는 경우에 한해서라면 새로운 변수에 이름을 붙이지 않고도 가능하지만, 그런 만용은 알고리듬을 스파게티로 만들 것입니다. 다만 NULL은 어떤 타입에도 속하지 않는 새롭고 유일한 값이기 때문에 임의의 타입과 합 타입을 이루어도 스파게티를 만들 정도는 아닙니다.
+* Null 타입의 변수를 만들 수 있게 되면 그 값은 NULL 값만을 갖게 되고, 이 값은 어떤 경우에도 정상이 아닌 값으로 취급되므로 아무 쓸모도 없습니다. 아마도 그런 변수를 만든다면 값을 위해서가 아니라 변수 이름 자체를 위해서일 것입니다. 또는 Null 타입을 둔 복합 타입일 수 있습니다. 만약 Object 타입의 하위 변수가 모두 Null 타입이라면 이는 키의 집합과 마찬가지입니다. 즉 변수 이름의 형식을 준수하는 문자열의 중복 없고 순서 없는 집합입니다. 문자열의 집합을 나타내야 한다면 List\<String\> 타입을 이용해 정의하는 것이 낫습니다. 만약 List 타입의 원소 타입이 Null이라면 이는 부호 없는 정수와 동등하며 Uint32 입을 이용해 정의하는 것이 낫습니다. 결국 Null 타입만을 갖는 변수를 만들 수 있게 해도 얻는 이득은 전혀 없습니다.
+
+본 변수 체계에서는 합 타입의 존재를 Opt에 한해서만 허용하고, Null 타입을 Opt에 한해서만 사용합니다.
+
+Opt는 세심하게 정의된 타입이지만, 사용함에 있어 주의할 점은 다음과 같습니다.
+
+* Opt\<SomeType\> 타입의 값은 Null(NULL)이거나 SomeType 타입의 값 SomeType(...)입니다. Opt또한 NULL 값은 유일하기 때문에 Opt 타입을 여러 번 적용해 새 타입을 얻을 수 없습니다. Opt\<Opt\<SomeType\>\>같은 게 가능하다면, Null(NULL)은 비정상이고, Opt\<SomeType\>(SomeType(...))은 정상이고, Opt\<SomeType\>(Null(NULL))은 비정상을 정상화한 것입니다. 상식적으로도 비논리적임을 알 수 있습니다.
+* 한편 Float32, List 타입은 그 자체로 비정상적인 상태를 잘 정의하고 있는 타입이므로 (각각 NaN, Nil) 변수를 Opt\<Float32\>, Opt\<List\> 타입으로 정의해야만 할 일은 거의 없습니다.
+
+Opt 타입은 표기상 복합 타입의 일종이며 정의된 변수의 Opt 타입명은 항상 Opt\<String\>와 같이 완결된 타입명으로 나타내야 합니다. 또한 Object나 List 타입의 변수에서 원소에 대한 정의가 명확하지 않을 때엔 완결된 타입명으로 나타내야 하듯, Opt\<Object\>나 Opt\<List\> 타입은 그런 경우에는 두 번 완결된 타입명으로 나타내야 합니다.
+
+한편 Opt 타입은 표기상 복합 타입이지만 단말 노드 변수일 수 있습니다. Opt\<String\>과 같이 원시 타입에 대한 Opt 타입인 경우 자연스럽게 단말 노드 변수가 됩니다. 복합 타입에 대한 Opt 타입인 경우 상태에 따라 하위 트리가 존재할 수도 있고, NULL이면 하위 트리를 해석하려 해서는 안 됩니다.
+
+Opt 타입 변수 노드의 하위 트리에 대한 위 문단의 논의는 하위 변수들에 관해서만 유효합니다. Opt\<T\> 타입의 변수는 T 타입의 변수와 같은 속성들을 갖습니다. 속성값은 값, 타입, 여러 상태로부터 유래합니다. 속성값이 T 타입의 값으로부터 유래하는 경우라면, Opt\<T\> 타입의 변수가 NULL인 경우 해당 속성값 역시 그에 접근하려는 시도만으로 정의되지 않은 동작을 초래합니다. 그 밖에는 isNullable처럼 명시된 경우가 아니라면 Opt\<T\> 타입의 변수는 동일한 방식으로 정의된 T 타입의 변수와 완전히 동일한 속성값의 집합을 갖습니다.
+
+### Applicability
+
+우리는 변수가 값을 읽고 쓸 수 있는 것이라고 배웠습니다. 그러나 어떤 변수를 잘 정의했을 때, 이 변수의 값이 존재해서 어떻게 활용할 수는 있는데, 그럼에도 불구하고 그 값 자체는 읽을 수도 쓸 수도 없다는 것이 밝혀졌습니다. 다행히도 우리가 변수를 정의할 때 관심사의 본질은 포함 관계의 위계를 이루는 어떤 이름에 대해 값을 주고받을 수 있다는 본질이었으며, 그 이름이 실제로 어떤 값을 지니고 있게 해야만 하거나 어떤 실제로 지니고 있는 값을 가져와야만 하는 것은 아니었습니다.
+
+이런 값의 이름은 함수입니다. N개의 이름붙은 인수 InVal1@InTy1, InVal2@InTy2, ..., InValN@InTyN을 받아 OutTy 타입의 값을 내놓는 함수의 타입은 다음과 같이 적습니다.
+
+Fun(InVal1@InTy1, InVal2@InTy2, ..., InValN@InTyN)<OutTy>
+
+TBD.
 
 ### Access previliges
 
-각 변수들에 대한 접근권한은 read, write, read&write로 다음과 같이 표현합니다.
+각 변수들에 대한 접근 권한은 읽기 가능 (read), 쓰기 가능 (write), 읽기 및 쓰기 가능 (read&write) 으로 각각 r, w, rw로 표현됩니다.
 
-* r
-* w
-* rw
+읽기 권한은 노드에 해당하는 변수의 값을 유지한 채로 얻어내는 것입니다. 쓰기 권한은 노드에 해당하는 변수의 값을 바꾸는 것으로, 비단말 Object 노드의 스키마를 바꿀 수는 없으며 같은 의미에서 새로운 노드를 추가·삭제할 수 없습니다.
 
-복합 값을 갖는 어떤 변수는 하위 변수들의 접근권한이 일정하지 않을 경우 하나의 접근권한을 갖지 않을 수 있습니다. 이 경우 접근권한은 `-`로 표현합니다.
+List 타입의 값은 크기가 변할 수 있으므로 List 타입의 변수에 대한 쓰기 권한은 내부 노드를 추가·삭제할 수 있음을 의미합니다. List 타입의 변수에 대한 쓰기 권한은 추가 가능 (insert) 과 삭제 가능 (erase) 으로 이루어지며 w는 ie를 함의합니다. 따라서 List 타입 변수에 대한 접근 권한에는 r, i, e, ri, re, w(ie), rw(rie)가 있습니다. 한편 List의 원소 타입의 변수에 대한 쓰기 권한은 List의 원소임을 고려하지 않았을 경우과 마찬가지이며, 리스트에 대한 추가 가능 권한은 생성 가능 (construct), 삭제 가능 권한은 소멸 가능 (destruct) 에 대응합니다. 마찬가지로 w는 cd를 함의합니다. 문서에서 c, d는 따로 표기하지 않습니다.
 
-## Full listing
+Object 타입의 변수는 하위 변수들에 대한 권한이 일정하지 않을 경우 하나의 권한을 갖지 않을 수 있습니다. 이 경우 권한은 `-`로 표현합니다. List 타입의 변수의 경우 하위 값들에 대해 일정한 권한을 갖습니다. 다만 하위 값들의 권한이 `-`인 경우 List의 권한 역시 `-`가 됩니다.
+
+Opt 타입의 변수의 권한은 특별하게 정하지 않습니다.
+
+Func 타입의 변수는 r, w 등의 권한이 없고 a이다.
+
+변수에 읽기 권한이 없는 경우, 변수의 값으로부터 유래하는 속성의 값 역시 읽을 수 없습니다.
+
+## List of all known Properties
+
+별표 \* 한 것은 속성의 값이 변수의 값으로부터 유래하는 경우.
+
+* 모든 타입 공통
+    * `value`*: 자신의 값, 자기의 타입.
+    * `name`: 값은 정의된 변수 이름 또는 속성 이름, 타입은 Opt<String>. "Foo", "Bar", "Baz", "Engine", "Reg", "Net", "Perf", "Files" 등의 값을 가짐.
+        * List의 원소일 경우 NULL.
+    * `type`: 값은 변수 자기의 기초 타입명, 타입은 String. "Integer32", "String", "Object", "List" 등의 값을 가짐.
+        * 완결된 타입명이 아니므로 "Object(Foo, Bar, Baz)"나 "List\<SomeType\>" 따위가 아님.
+        * 다만 Opt 타입은 Opt<T>일 때 이 속성값은 "T".
+    * `propList`: 노드가 갖는 모든 속성의 이름의 리스트, 타입은 List\<String\>.
+    * `lastChng`: 노드의 값이 마지막으로 변경된 시점의 Unix timestamp, 타입은 Integer32.
+        * 변수에 대해서는 엔진이 켜진 시점부터 갱신. 기본값을 바꿀 수 없는 변수도 마찬가지.
+        * 불변상수(속성)에 대해서는 0.
+    * `lastChngH`: 노드의 값이 마지막으로 변경된 시점의 Unix timestamp를 64비트로 나타낸 경우의 상위 32비트, 타입은 Integer32.
+    * `isNullable`: Opt 타입 여부, 타입은 Boolean. 노드가 Opt 타입일 때에만 TRUE, 그 외에는 FALSE.
+* Integer32, Uint32
+    * `min`: 정의된 최솟값, 자기의 타입. 정의되지 않은 경우 기본값은 각각 INT32_MIN, UINT32_MIN.
+    * `max`: 정의된 최댓값, 자기의 타입. 정의되지 않은 경우 기본값은 각각 INT32_MAX, UINT32_MAX.
+* String
+    * `length`*: 타입은 Uint32. 문자열 내용을 나타내는 바이트 시퀀스를 이루는 UTF-16 코드 단위 (code unit) 의 개수.
+        * Unicode/UCS 코드 포인트 (code point) 의 개수가 아님.
+        * Unicode 문자소(grapheme)의 개수나 문자소군(grapheme cluster)의 개수, 문자의 개수가 아님.
+* Object, List
+    * `size`*: 변수가 갖는 키의 개수, 타입은 Uint32. 즉 Object의 경우에는 하위 변수의 수. List의 경우에는 동시에 리스트의 길이.
+* Object
+    * `keysList`: 하위 변수들의 이름의 목록 (중복·순서 없음), 타입은 List\<String\>. Object 타입명을 완결할 때에는 하위 변수들의 이름이 필요하다.
+* List
+    * `itemType`: 원소의 타입명, 타입은 String. List의 원소의 타입은 모두 일정하며 List 타입명을 완결할 때에는 이 타입명이 우선 필요하다.
+
+## List of all known Variables
 
 * Path: `/`
 * Type: Object(Engine, Net, Perf, Files, Reg)
@@ -90,47 +263,225 @@ Object 타입의 값은 하위 노드의 이름을 붙여 나타내며, 하위 �
 엔진이 GUI의 요청 없이 GUI에 메시지를 보내는 포트이다. GUI가 켜질 때 임의로 포트를 열어서 Listen하고, 엔진에 이를 알려줘야 한다.
 
 #### /Engine/PortsListening/
+
 * Type: Boolean
 * Access: r
 
 기본값: `FALSE`
 
 #### /Engine/PortsConnecting/
+
 * Type: Boolean
 * Access: rw
 
 기본값: `FALSE`
 
 #### /Engine/Log/
+
 * Type: List\<String\>
 * Access: rw
 
-기본값: 정의되지 않음.
-
-### /Net/
-
-* Type: Object(ConnectingList)
-
-#### /Net/ConnectingList/
-* Type: List\<String\>
-* Access: rw
-
-기본값: 정의되지 않음.
-
-### /Perf/
-
-### /Files/
+이 값은 엔진 내부에서 관리되는 로그이다.
 
 ### /Reg/
 
-#### /Reg/Key/
-* Type: Object(...)
+* Type: Object(*)
+* Access: -
+
+[TWTL Doc 014](/014-enginereg) 참조.
+
+#### /Reg/Raw/
+
+TBD
+
+#### /Reg/Short/
+
+* Type: Object(GlobalServices, GlobalRun, GlobalRunOnce, UserRun, UserRunOnce)
+* Access: -
+
+이 값의 하위 키는 TWTL Doc 014에 기재된 레지스트리 감시 대상 목록의 별명을 따른다.
+
+##### /Reg/Short/GlobalServices
+
+* Type: List\<Object(Name@String, Opt<Value>@String)\>
+* Access: rw
+
+GlobalServices 목록입니다. 이 값에서 항목에 해당하는 키에 문자열 값 ImagePath가 없을 경우 Value는 NULL입니다.
+
+##### /Reg/Short/GlobalRun
+
+* Type: List\<Object(Name@String, Value@String)\>
+* Access: rw
+
+GlobalRun 목록입니다.
+
+##### /Reg/Short/GlobalRunOnce
+
+* Type: List\<Object(Name@String, Value@String)\>
+* Access: rw
+
+GlobalRunOnce 목록입니다.
+
+##### /Reg/Short/UserRun
+
+* Type: List\<Object(Name@String, Value@String)\>
+* Access: rw
+
+UserRun 목록입니다.
+
+##### /Reg/Short/UserRunOnce
+
+* Type: List\<Object(Name@String, Value@String)\>
+* Access: rw
+
+UserRunOnce 목록입니다.
+
+### /Net/
+
+* Type: Object(*)
+* Access: -
+
+[TWTL Doc 015](/015-enginenet) 참조.
+
+#### /Net/Connections/
+
+* Type: List\<Object(*)\>
 * Access: r
 
-#### /Reg/Key/Name/
+엔진이 켜진 후 발생한 모든 유의할 만한 연결의 모음이다.
+
+경로사양 /Net/Connections?IsDangerous=TRUE/을 쓸 수 있음.
+
+##### /Net/Connections$*/
+
+* Type: Object(SrcIP, SrcPort, DestIP, DestPort, PID, ProcessImagePath, IsDangerous, Alive)
+* Access: r
+
+###### /Net/Connections$*/SrcIP
+
+* Type: Uint32
+* Access: r
+
+연결의 로컬 IP 엔드포인트의 32비트 IPv4 주소이다.
+
+###### /Net/Connections$*/SrcPort
+
+* Type: Integer32
+    * 추가 제약사항: valid TCP port number (1~65535) 이어야 한다.
+* Access: r
+
+연결의 로컬 IP 엔드포인트의 포트 번호이다.
+
+###### /Net/Connections$*/DestIP
+
+* Type: Uint32
+* Access: r
+
+연결의 리모트 IP 엔드포인트의 32비트 IPv4 주소이다.
+
+###### /Net/Connections$*/DestPort
+
+* Type: Integer32
+    * 추가 제약사항: valid TCP port number (1~65535) 이어야 한다.
+* Access: r
+
+연결의 리모트 IP 엔드포인트의 포트 번호이다.
+
+###### /Net/Connections$*/PID
+
+* Type: Opt<Integer32>
+    * 추가 제약사항: valid PID (1~65535) 이어야 한다.
+* Access: r
+
+연결의 로컬 IP 엔드포인트의 소켓 핸들을 열고 있는 프로세스의 PID이다. 유효한 연결이 아닐 경우 NULL이다.
+
+###### /Net/Connections$*/ProcessImagePath
+
 * Type: String
 * Access: r
 
-#### /Reg/Key/Value/
-* Type: String
+연결의 로컬 IP 엔드포인트의 소켓 핸들을 연 프로세스의 실행 파일 경로이다.
+
+###### /Net/Connections$*/IsDangerous
+
+* Type: Boolean
 * Access: r
+
+연결의 원격지 IP 엔드포인트가 보안상 위험한 지점인지 엔진이 판단한 값이다.
+
+###### /Net/Connections$*/Alive
+
+* Type: Boolean
+* Access: r
+
+해당 연결이 현재 시스템에서 유효한 상태의 연결인지를 의미한다.
+
+### /Perf/
+
+* Type: Object(*)
+* Access: -
+
+[TWTL Doc 016](/016-engineperf) 참조.
+
+#### /Perf/Proc/
+
+TBD.
+
+### /Perf/Kill/
+
+* Type: Opt\<Object(PID@Integer)\>
+* Access: rw
+    * 이 값은 읽으면 항상 NULL이다.
+    * 이 값은 NULL로 쓸 수 없다.
+
+Kill 대상 프로세스의 PID를 설정하면 엔진은 즉시 해당 PID를 보유한 프로세스를 Kill한다.
+
+### /Perf/RegisterAutoKill/
+
+* Type: List\<Object(ProcessImagePath@String)\>
+* Access: i
+
+AutoKill 대상 Executable image의 파일시스템 path를 담고 있는 큐이며 엔진은 원소가 추가되는 순간부터 해당 PID를 보유한 프로세스를 Kill한다. 이 큐에는 항목을 추가하는 것만 허용되며 큐의 내용을 볼 수도 원소를 지울 수도 없다.
+
+### /Perf/RemoveExecImage/
+
+* Type: Opt\<Object(ProcessImagePath@String)\>
+* Access: rw
+    * 이 값은 읽으면 항상 NULL이다.
+    * 이 값은 NULL로 쓸 수 없다.
+
+Executable image의 파일시스템 path 설정하면 엔진은 즉시 해당 경로의 파일을 삭제한다.
+
+### /Perf/PIDByImageName/
+
+* Type: Func(ImageName@String)\<List<Uint32>\>
+* Access: a
+
+### /Perf/ImagePathByPID/
+
+* Type: Func(PID@Uint32)\<String\>
+* Access: a
+
+### /Perf/ResolveImagePath/
+
+* Type: Func(ImagePath@String)\<String\>
+* Access: a
+
+### /Files/
+
+[TWTL Doc 017](/017-enginefiles) 참조.
+
+## 참고
+
+### 특수문자의 용법
+
+* `/`, `$`, `!` - 키 연결 문자 (순서대로 변수 이름, 인덱스, 속성 이름) / `%` - 연결 문자 와일드카드
+* `*` - 타입/키 와일드카드 / 속성 값 특수 유래 마커
+* `,` - 키 결합 연산자
+* `^` - 키 별명 연산자
+* `;` - 슬라이스 결합 연산자
+* `:` - 슬라이스 연산자 / `::` - 역순 슬라이스 연산자
+* `?` - 필터 연산자 / `&`, `|` - 필터 구문 연산자 / `+`, `-`, `<<`, `>>`, `<>`, `=`, `<=`, `>=`, `~=` - 필터 구문 연산자
+* `()` - 키 구문 연산자 / 슬라이스 구문 연산자 / 필터 구문 연산자 / 복합 타입 완결된 타입명의 키 파라미터 연산자 (Object)
+* `@` - 복합 타입 완결된 타입명의 키-타입 파라미터 결합 연산자 (Object, Func)
+* `\<\>` - 복합 타입 완결된 타입명의 타입 파라미터 연산자 (List, Opt, Func)
