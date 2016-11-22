@@ -162,7 +162,9 @@ Opt 타입 변수 노드의 하위 트리에 대한 위 문단의 논의는 하�
 
 이런 값의 이름은 함수입니다. N개의 이름붙은 인수 InVal1@InTy1, InVal2@InTy2, ..., InValN@InTyN을 받아 OutTy 타입의 값을 내놓는 함수의 타입은 다음과 같이 적습니다.
 
-Fun(InVal1@InTy1, InVal2@InTy2, ..., InValN@InTyN)\<OutTy\>
+* Func(InVal1@InTy1, InVal2@InTy2, ..., InValN@InTyN)\<OutTy\>
+
+Object(InVal1@InTy1, InVal2@InTy2, ..., InValN@InTyN)를 이 함수 타입의 노드의 입력 타입, OutTy를 출력 타입이라고 합니다.
 
 TBD.
 
